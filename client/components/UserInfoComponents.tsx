@@ -4,7 +4,6 @@ import { userAtom, loadingAtom } from "@/atoms/auth";
 import { Skeleton } from "./ui/skeleton";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import type { EmailVerificationProps } from "@/interfaces";
-import Image from "next/image";
 
 export function UserName({
   className,
