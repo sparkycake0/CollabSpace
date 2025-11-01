@@ -12,7 +12,7 @@ import Tasks from "./routes/tasks.js";
 
 export const server = Fastify();
 await server.register(cors, {
-  origin: "*",
+  origin: "https://collab-space-five.vercel.app",
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
 });
@@ -34,13 +34,13 @@ server.listen({ port: 3001, host: "0.0.0.0" }, (err, address) => {
 // ✅ Socket.io setup
 const httpServer = createServer();
 export const io = new SocketIoServer(httpServer, {
-  cors: { origin: "http://localhost:3000" },
+  cors: { origin: "https://collab-space-five.vercel.app" },
 });
 
 ChatRoutes();
 
-httpServer.listen(3002, "0.0.0.0", () => {
-  console.log("Socket.IO server running on http://localhost:3002");
+httpServer.listen(3002, "0.0.0.0", ({ address }) => {
+  console.log(`Socket.IO server running on ${address}`);
 });
 
 // ✅ Graceful shutdown (optional but good practice)
