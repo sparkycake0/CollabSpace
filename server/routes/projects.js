@@ -13,11 +13,15 @@ export default function ProjectRoutes() {
     }
   });
   server.get("/projects", async (req, reply) => {
-    const projects = await prisma.project.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    try {
+      const projects = await prisma.project.findMany({
+        orderBy: { createdAt: "desc" },
+      });
 
-    return reply.send(projects);
+      return reply.send(projects);
+    } catch (err) {
+      console.log(err);
+    }
   });
   server.get("/projects/:id", async (req, reply) => {
     try {
