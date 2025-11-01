@@ -1,7 +1,7 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
-
+import pkg from "@prisma/client";
+const { PrismaClient } = pkg;
 // neonConfig.poolQueryViaFetch = true
 
 // Type definitions
