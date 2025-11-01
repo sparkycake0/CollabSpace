@@ -23,7 +23,7 @@ await server.register(CollabRoutes);
 await server.register(Auth);
 await server.register(Tasks);
 
-server.listen({ port: 3001 }, (err, address) => {
+server.listen({ port: 3001, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
@@ -39,7 +39,7 @@ export const io = new SocketIoServer(httpServer, {
 
 ChatRoutes();
 
-httpServer.listen(3002, () => {
+httpServer.listen(3002, "0.0.0.0", () => {
   console.log("Socket.IO server running on http://localhost:3002");
 });
 
