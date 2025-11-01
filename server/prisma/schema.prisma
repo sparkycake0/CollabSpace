@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://neondb_owner:npg_NSZRI2Cai5pf@ep-gentle-unit-agudlbop-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+}
+
+model Project {
+  id         String   @id @default(cuid())
+  name       String
+  desc       String
+  priority   Int
+  date       String?
+  chat       Boolean
+  docs       Boolean
+  whiteboard Boolean
+  tasks      Boolean
+  createdAt  DateTime @default(now())
+  ownerId    String
+
+  members ProjectMember[]
+}
+
+model ProjectMember {
+  id        String  @id @default(cuid())
+  projectId String
+  userId    String
+  userName  String?
+  userPhoto String?
+  role      Role    @default(MEMBER)
+  project   Project @relation(fields: [projectId], references: [id])
+
+  @@unique([projectId, userId])
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  projectId String
+  userId    String
+  userName  String
+  userPhoto String?
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String  @id @unique @default(cuid())
+  userId    String  @unique
+  userName  String?
+  userEmail String
+  userPhoto String?
+}
+
+model Task {
+  id        String @id @unique @default(cuid())
+  name      String
+  desc      String
+  status    Status @default(PENDING)
+  projectId String
+  madeBy    String
+}
+
+enum Status {
+  PENDING
+  DONE
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
