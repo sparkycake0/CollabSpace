@@ -1,8 +1,8 @@
 import type { ApiOptions } from "@/interfaces";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const url = "http://localhost:3001";
-export const socketUrl = "http://localhost:3002";
+export const url = "https://collabspace-0ab8.onrender.com";
+export const socketUrl = "https://collabspace-0ab8.onrender.com";
 
 export async function addUserToProject(
   projectId: string,
