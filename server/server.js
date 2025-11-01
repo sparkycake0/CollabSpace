@@ -39,8 +39,8 @@ export const io = new SocketIoServer(httpServer, {
 
 ChatRoutes();
 
-httpServer.listen(3002, "0.0.0.0", ({ address }) => {
-  console.log(`Socket.IO server running on ${address}`);
+httpServer.listen(3002, "0.0.0.0", () => {
+  console.log(`Socket.IO server running on 3002`);
 });
 
 // ✅ Graceful shutdown (optional but good practice)
