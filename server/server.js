@@ -12,7 +12,7 @@ import Tasks from "./routes/tasks.js";
 
 export const server = Fastify();
 await server.register(cors, {
-  origin: "https://collab-space-five.vercel.app",
+  origin: "https://collaborationspace.vercel.app",
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
 });
@@ -34,7 +34,7 @@ server.listen({ port: 3001, host: "0.0.0.0" }, (err, address) => {
 // ✅ Socket.io setup
 const httpServer = createServer();
 export const io = new SocketIoServer(httpServer, {
-  cors: { origin: "https://collab-space-five.vercel.app" },
+  cors: { origin: "https://collaborationspace.vercel.app" },
 });
 
 ChatRoutes();
