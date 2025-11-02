@@ -1,7 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import fastifyFormbody from "@fastify/formbody";
-import { createServer } from "http";
 import { Server as SocketIoServer } from "socket.io";
 
 import ProjectRoutes from "./routes/projects.js";
@@ -10,7 +9,10 @@ import ChatRoutes from "./routes/chat.js";
 import Auth from "./routes/auth.js";
 import Tasks from "./routes/tasks.js";
 
-export const server = Fastify();
+export const server = Fastify({
+  logger: true,
+});
+
 await server.register(cors, {
   origin: "https://collaborationspace.vercel.app",
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
@@ -23,28 +25,33 @@ await server.register(CollabRoutes);
 await server.register(Auth);
 await server.register(Tasks);
 
-server.listen({ port: 3001, host: "0.0.0.0" }, (err, address) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
-  }
-  console.log(`REST API running at ${address}`);
+server.get("/", async () => {
+  return { message: "CollabSpace backend running ✅" };
 });
 
-// ✅ Socket.io setup
-const httpServer = createServer();
-export const io = new SocketIoServer(httpServer, {
+const PORT = process.env.PORT || 3001;
+server.listen({ port: PORT, host: "0.0.0.0" });
+
+export const io = new SocketIoServer(server.server, {
   cors: { origin: "https://collaborationspace.vercel.app" },
 });
 
 ChatRoutes();
 
-httpServer.listen(3002, "0.0.0.0", () => {
-  console.log(`Socket.IO server running on 3002`);
-});
+const address = server.server.address();
+if (address) {
+  const host = address.address === "::" ? "localhost" : address.address;
+  const port = address.port;
+  console.log(`Server (REST + Socket.IO) running at http://${host}:${port}`);
+} else {
+  console.log(
+    "Server address is null, probably because server isn't fully started yet.",
+  );
+}
 
-// ✅ Graceful shutdown (optional but good practice)
 process.on("SIGINT", async () => {
-  await prisma.$disconnect();
+  if (typeof prisma !== "undefined" && prisma.$disconnect) {
+    await prisma.$disconnect();
+  }
   process.exit(0);
 });
